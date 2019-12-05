@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+  
+  build-upload:
+    name: Build Image and Upload to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build and Upload
+      with:
+        DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+        TAG: $(date +%y.%m)
+      run: |
+        docker build --tag silentdigit/duckdns-updater:${TAG} .
+        docker login --username silentdigit --p DOCKER_TOKEN
+        docker push silentdigit/duckdns-updater:${TAG}
