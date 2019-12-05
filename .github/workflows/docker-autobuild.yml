@@ -8,8 +8,10 @@ jobs:
     name: Build Image and Upload to Docker Hub
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v1
+
     - name: Build and Upload
-    - uses: actions/checkout@v1
       with:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
         TAG: $(date +%y.%m)
