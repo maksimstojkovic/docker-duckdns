@@ -5,8 +5,8 @@ FROM alpine:latest
 RUN apk add --no-cache curl
 
 # Copy scripts
-WORKDIR /scripts
 COPY ./scripts /scripts
+WORKDIR /scripts
 RUN chmod -R +x /scripts
 
 # Image starting command
