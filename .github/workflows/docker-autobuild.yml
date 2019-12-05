@@ -17,5 +17,5 @@ jobs:
       run: |
         TAG=$(date +%y.%m)
         docker build --tag silentdigit/duckdns-updater:${TAG} .
-        docker login --username silentdigit --p DOCKER_TOKEN
+        docker login -u silentdigit -p DOCKER_TOKEN
         docker push silentdigit/duckdns-updater:${TAG}
