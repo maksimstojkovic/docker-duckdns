@@ -15,7 +15,17 @@ jobs:
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
+        # Variables
         TAG=$(date +%y.%m)
-        docker build --tag silentdigit/duckdns:${TAG} .
+        NAME=silentdigit/duckdns
+
+        # Build image
+        docker build --tag ${NAME}:${TAG} .
+
+        # Push image as current version
         docker login -u silentdigit -p ${DOCKER_TOKEN}
-        docker push silentdigit/duckdns:${TAG}
+        docker push ${NAME}:${TAG}
+
+        # Push image as latest
+        docker tag ${NAME}:${TAG} ${NAME}:latest
+        docker push ${NAME}:latest
