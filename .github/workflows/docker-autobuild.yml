@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v1
 
     - name: Build and Upload
-      with:
+      env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
         TAG: $(date +%y.%m)
       run: |
