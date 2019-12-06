@@ -9,7 +9,7 @@ if [ -z "$DUCKDNS_SUBDOMAIN" ]; then
   exit 1
 fi
 
-# Loop update infinitely
+# Loop update process
 while :; do
   echo url="https://www.duckdns.org/update?domains=${DUCKDNS_SUBDOMAIN}&token=${DUCKDNS_TOKEN}&ip=" | curl -ks -o /scripts/duck.log -K -
 
