@@ -11,6 +11,7 @@ jobs:
     - 
       name: Build Docker buildx
       run: |
+        export DOCKER_CLI_EXPERIMENTAL=enabled
         export DOCKER_BUILDKIT=1
         docker build --platform=local -o . git://github.com/docker/buildx
         mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx
@@ -21,7 +22,7 @@ jobs:
         docker version
         docker buildx version
         docker ps -a
-        docer buildx ls
+        docker buildx ls
 
     - 
       name: Checkout Repo
