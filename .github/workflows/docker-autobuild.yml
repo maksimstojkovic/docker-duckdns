@@ -8,19 +8,29 @@ jobs:
     name: Build Muilti-Platform Image and Upload to Docker Hub
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Repo
+    - 
+      name: Checkout Repo
       uses: actions/checkout@v1
-
-    - name: Build and Upload
+    - 
+      name: Docker Version
+      run: |
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        docker version
+        docker buildx version
+        docker ps -a
+    - 
+      name: Build and Upload
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
         # Enable multi-platform builds
-        export DOCKER_BUILDKIT=1
-        docker build --platform=local -o . git://github.com/docker/buildx
-        mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx
+        # export DOCKER_BUILDKIT=1
+        # docker build --platform=local -o . git://github.com/docker/buildx
+        # mkdir -p ~/.docker/cli-plugins && mv buildx ~/.docker/cli-plugins/docker-buildx
+
         docker run --rm --privileged docker/binfmt:66f9012c56a8316f9244ffd7622d7c21c1f6f28d
         docker buildx create --use --name mybuilder
+        docker buildx ls
 
         # Variables
         TAG=$(date +%y.%m)
