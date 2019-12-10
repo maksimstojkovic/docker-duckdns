@@ -5,7 +5,7 @@ on: [push]
 jobs:
   
   build-upload:
-    name: Build Image and Upload to Docker Hub
+    name: Build Muilti-Platform Image and Upload to Docker Hub
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repo
@@ -15,17 +15,18 @@ jobs:
       env:
         DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
       run: |
+        # Enable multi-platform builds
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        docker run --rm --privileged docker/binfmt
+        docker buildx create --use --name mybuilder
+
         # Variables
         TAG=$(date +%y.%m)
         NAME=silentdigit/duckdns
-
-        # Build image
-        docker build --tag ${NAME}:${TAG} .
-
-        # Push image as current version
         docker login -u silentdigit -p ${DOCKER_TOKEN}
-        docker push ${NAME}:${TAG}
 
-        # Push image as latest
-        docker tag ${NAME}:${TAG} ${NAME}:latest
-        docker push ${NAME}:latest
+        # Build image as TAG version
+        docker buildx build -t ${NAME}:${TAG} --platform=linux/arm,linux/arm64,linux/amd64 . --push
+
+        # Build image as latest version
+        docker buildx build -t ${NAME}:latest --platform=linux/arm,linux/arm64,linux/amd64 . --push
