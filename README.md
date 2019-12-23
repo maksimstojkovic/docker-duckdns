@@ -7,7 +7,7 @@
 [![Image Version](https://images.microbadger.com/badges/version/silentdigit/duckdns.svg)](https://hub.docker.com/repository/docker/silentdigit/duckdns)
 [![Image Commit](https://images.microbadger.com/badges/commit/silentdigit/duckdns.svg)](https://github.com/silentdigit/docker-duckdns)
 
-Updates your Duck DNS IP address automatically at the frequency specified.
+Updates your Duck DNS IP address automatically at the frequency specified. Use `alpine` as a minimal base image for performing `curl` requests.
 
 ## Variables
 
