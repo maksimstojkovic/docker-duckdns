@@ -40,10 +40,10 @@ jobs:
         name: Build and Push
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CR_TOKEN: ${{ secrets.CR_TOKEN }}
         run: |
           # Login
-          docker login -u "$USERNAME" -p "$DOCKER_TOKEN"
+          echo $DOCKER_TOKEN | docker login -u "$USERNAME" --password-stdin
 
           # Setup build parameters
           BUILD_PARAMS="--platform="$PLATFORMS" --build-arg VCS_REF=$(git rev-parse --short HEAD) --push"
@@ -57,7 +57,7 @@ jobs:
           docker buildx build -t "$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
 
           # Repeat with docker packages
-          docker login login ghcr.io -u "$USERNAME" -p "GITHUB_TOKEN"
+          echo $GITHUB_TOKEN | docker login login ghcr.io -u "$USERNAME" --password-stdin
 
           echo test1
           # Build image as tagged version
