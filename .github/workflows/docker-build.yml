@@ -60,9 +60,11 @@ jobs:
           # Repeat with docker packages
           docker login https://docker.pkg.github.com -u "$USERNAME" -p "GITHUB_TOKEN"
 
+          echo test1
           # Build image as tagged version
           TAG=$(date +%y.%m)
-          docker buildx build -t docker.pkg.github.com/maksimstojkovic/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
+          docker buildx build -t docker.pkg.github.com/"$USERNAME"/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
+          echo test2
           # Build image as latest version
           TAG=latest
-          docker buildx build -t docker.pkg.github.com/maksimstojkovic/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
+          docker buildx build -t docker.pkg.github.com/"$USERNAME"/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
