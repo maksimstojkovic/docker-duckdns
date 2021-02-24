@@ -5,7 +5,6 @@ on: [push]
 env:
   USERNAME: maksimstojkovic
   PROJECT: duckdns
-  GIT_REPO: duckdns
   PLATFORMS: linux/amd64,linux/arm/v7,linux/arm64
 
 jobs:
@@ -58,13 +57,13 @@ jobs:
           docker buildx build -t "$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
 
           # Repeat with docker packages
-          docker login docker.pkg.github.com -u "$USERNAME" -p "GITHUB_TOKEN"
+          docker login login ghcr.io -u "$USERNAME" -p "GITHUB_TOKEN"
 
           echo test1
           # Build image as tagged version
           TAG=$(date +%y.%m)
-          docker buildx build -t docker.pkg.github.com/"$USERNAME"/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAMS .
+          docker buildx build -t ghcr.io/"$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
           echo test2
           # Build image as latest version
           TAG=latest
-          docker buildx build -t docker.pkg.github.com/"$USERNAME"/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAMS .
+          docker buildx build -t ghcr.io/"$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
