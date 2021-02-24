@@ -5,6 +5,7 @@ on: [push]
 env:
   USERNAME: maksimstojkovic
   PROJECT: duckdns
+  GIT_REPO: duckdns
   PLATFORMS: linux/amd64,linux/arm/v7,linux/arm64
 
 jobs:
