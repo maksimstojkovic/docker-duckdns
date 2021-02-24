@@ -57,7 +57,7 @@ jobs:
           docker buildx build -t "$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
 
           # Repeat with docker packages
-          echo $GITHUB_TOKEN | docker login login ghcr.io -u "$USERNAME" --password-stdin
+          echo $GITHUB_TOKEN | docker login ghcr.io -u "$USERNAME" --password-stdin
 
           echo test1
           # Build image as tagged version
