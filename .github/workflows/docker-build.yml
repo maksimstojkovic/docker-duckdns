@@ -6,7 +6,6 @@ env:
   USERNAME: maksimstojkovic
   PROJECT: duckdns
   PLATFORMS: linux/amd64,linux/arm/v7,linux/arm64
-  MB_HOOK: https://hooks.microbadger.com/images/silentdigit/duckdns/QHkNz0q8wchB8wXn40RvXkA8fxo=
 
 jobs:
   buildx:
@@ -41,6 +40,7 @@ jobs:
         name: Build and Push
         env:
           DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Login
           docker login -u "$USERNAME" -p "$DOCKER_TOKEN"
@@ -56,5 +56,12 @@ jobs:
           TAG=latest
           docker buildx build -t "$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
 
-          # Update MicroBadger metadata
-          curl -X POST "$MB_HOOK"
+          # Repeat with docker packages
+          docker login https://docker.pkg.github.com -u "$USERNAME" -p "GITHUB_TOKEN"
+
+          # Build image as tagged version
+          TAG=$(date +%y.%m)
+          docker buildx build -t docker.pkg.github.com/maksimstojkovic/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
+          # Build image as latest version
+          TAG=latest
+          docker buildx build -t docker.pkg.github.com/maksimstojkovic/"$GIT_REPO"/"$PROJECT":"$TAG" $BUILD_PARAM>
