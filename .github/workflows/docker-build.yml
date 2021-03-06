@@ -59,11 +59,10 @@ jobs:
           # Repeat with docker packages
           echo $CR_TOKEN | docker login ghcr.io -u "$USERNAME" --password-stdin
 
-          echo test1
           # Build image as tagged version
           TAG=$(date +%y.%m)
           docker buildx build -t ghcr.io/"$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
-          echo test2
+
           # Build image as latest version
           TAG=latest
           docker buildx build -t ghcr.io/"$USERNAME"/"$PROJECT":"$TAG" $BUILD_PARAMS .
